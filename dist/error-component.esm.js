@@ -166,18 +166,51 @@ const __vue_component__ = /*#__PURE__*/normalizeComponent({
   staticRenderFns: __vue_staticRenderFns__
 }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
 
-// Import vue component
+/* eslint-disable import/prefer-default-export */
 
-const install = function installErrorComponnet(Vue) {
+/**
+ * Get error messages from response.
+ *
+ * @param {Object} response
+ * @return {Object}
+ */
+const getErrors = response => {
+  var _response$response, _response$response$da;
+
+  /** get errors from response. */
+  if ((response === null || response === void 0 ? void 0 : (_response$response = response.response) === null || _response$response === void 0 ? void 0 : (_response$response$da = _response$response.data) === null || _response$response$da === void 0 ? void 0 : _response$response$da.errors) !== undefined) {
+    return response.response.data.errors;
+  }
+  /** get errors from custom object / array. */
+
+
+  if ((response === null || response === void 0 ? void 0 : response.errors) !== undefined) {
+    return response.errors;
+  }
+
+  return {};
+};
+
+var components = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  getErrors: getErrors,
+  Error: __vue_component__
+});
+
+// Import vue components
+
+const install = function installTestComponent(Vue) {
   if (install.installed) return;
   install.installed = true;
-  Vue.component('ErrorComponnet', __vue_component__);
+  Object.entries(components).forEach(([componentName, component]) => {
+    Vue.component(componentName, component);
+  });
 }; // Create module definition for Vue.use()
-// to be registered via Vue.use() as well as Vue.component()
 
 
-__vue_component__.install = install; // Export component by default
-// also be used as directives, etc. - eg. import { RollupDemoDirective } from 'rollup-demo';
-// export const RollupDemoDirective = component;
+const plugin = {
+  install
+}; // To auto-install on non-es builds, when vue is found
 
-export default __vue_component__;
+export default plugin;
+export { __vue_component__ as Error, getErrors };

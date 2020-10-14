@@ -1,4 +1,58 @@
-'use strict';Object.defineProperty(exports,'__esModule',{value:true});var script = {
+'use strict';Object.defineProperty(exports,'__esModule',{value:true});function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function _iterableToArrayLimit(arr, i) {
+  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+  return arr2;
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}var script = {
   name: 'Error',
   props: {
     errors: Object,
@@ -152,12 +206,39 @@ var __vue_is_functional_template__ = false;
 var __vue_component__ = /*#__PURE__*/normalizeComponent({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
-}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);// Import vue component
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);/* eslint-disable import/prefer-default-export */
 
-var install = function installErrorComponnet(Vue) {
+/**
+ * Get error messages from response.
+ *
+ * @param {Object} response
+ * @return {Object}
+ */
+var getErrors = function getErrors(response) {
+  var _response$response, _response$response$da;
+
+  /** get errors from response. */
+  if ((response === null || response === void 0 ? void 0 : (_response$response = response.response) === null || _response$response === void 0 ? void 0 : (_response$response$da = _response$response.data) === null || _response$response$da === void 0 ? void 0 : _response$response$da.errors) !== undefined) {
+    return response.response.data.errors;
+  }
+  /** get errors from custom object / array. */
+
+
+  if ((response === null || response === void 0 ? void 0 : response.errors) !== undefined) {
+    return response.errors;
+  }
+
+  return {};
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,getErrors: getErrors,Error: __vue_component__});var install = function installTestComponent(Vue) {
   if (install.installed) return;
   install.installed = true;
-  Vue.component('ErrorComponnet', __vue_component__);
+  Object.entries(components).forEach(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+        componentName = _ref2[0],
+        component = _ref2[1];
+
+    Vue.component(componentName, component);
+  });
 }; // Create module definition for Vue.use()
 
 
@@ -180,11 +261,5 @@ var plugin = {
   if (GlobalVue) {
     GlobalVue.use(plugin);
   }
-} // Inject install function into component - allows component
-// to be registered via Vue.use() as well as Vue.component()
-
-
-__vue_component__.install = install; // Export component by default
-// also be used as directives, etc. - eg. import { RollupDemoDirective } from 'rollup-demo';
-// export const RollupDemoDirective = component;
-exports.default=__vue_component__;
+} // Default export is library as a whole, registered via Vue.use()
+exports.Error=__vue_component__;exports.default=plugin;exports.getErrors=getErrors;
