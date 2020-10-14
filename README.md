@@ -9,7 +9,7 @@ An easy to use Laravel validation component for Vuejs.
 To get started with `error-component`, you first need to install it:
 
 ```
-npm i error-component
+npm i error-component --save
 ```
 
 # Usage
@@ -19,7 +19,7 @@ npm i error-component
 To start using `error-component`, you need to import and register it:
 
 ```js
-import Error from 'error-component';
+import { Error } from 'error-component';
 
 export default Vue.extend({
   components: {
@@ -48,12 +48,25 @@ axios
     this.errors = {};
   })
   .catch((error) => {
-    if (
-      error.response.data !== undefined
-      && error.response.data.errors !== undefined
-    ) {
+    if (error?.response?.data?.errors !== undefined) {
       this.errors = error.response.data.errors;
     }
+  });
+```
+
+Alternatively, you can use the `getErrors` helper method:
+
+```js
+import { Error, getErrors } from 'error-component';
+
+...
+axios
+  .post('/login', this.form)
+  .then(() => {
+    this.errors = {};
+  })
+  .catch((error) => {
+    this.errors = getErrors(error);
   });
 ```
 
