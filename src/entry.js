@@ -1,11 +1,13 @@
-// Import vue component
-import component from '@/error-component.vue';
+// Import vue components
+import * as components from '@/lib-components/index';
 
 // install function executed by Vue.use()
-const install = function installErrorComponnet(Vue) {
+const install = function installTestComponent(Vue) {
   if (install.installed) return;
   install.installed = true;
-  Vue.component('ErrorComponnet', component);
+  Object.entries(components).forEach(([componentName, component]) => {
+    Vue.component(componentName, component);
+  });
 };
 
 // Create module definition for Vue.use()
@@ -27,14 +29,9 @@ if ('false' === process.env.ES_BUILD) {
     GlobalVue.use(plugin);
   }
 }
+// Default export is library as a whole, registered via Vue.use()
+export default plugin;
 
-// Inject install function into component - allows component
-// to be registered via Vue.use() as well as Vue.component()
-component.install = install;
-
-// Export component by default
-export default component;
-
-// It's possible to expose named exports when writing components that can
-// also be used as directives, etc. - eg. import { RollupDemoDirective } from 'rollup-demo';
-// export const RollupDemoDirective = component;
+// To allow individual component use, export components
+// each can be registered via Vue.component()
+export * from '@/lib-components/index';
