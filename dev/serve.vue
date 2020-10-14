@@ -1,11 +1,11 @@
 <script>
 import Vue from 'vue';
-import Error from '@/error-component.vue';
+import { Error, getErrors } from '@/entry';
 
 export default Vue.extend({
   name: 'ServeDev',
   components: {
-    Error
+    Error,
   },
   data() {
     return {
@@ -14,16 +14,19 @@ export default Vue.extend({
   },
   methods: {
     signUp() {
-      this.errors = {
-        email: [
-          "The Email address provided is not valid.",
-        ],
-        password: [
-          "Password confirmation does not match.",
-          "Password must contain at least 1 numeric value.",
-          "Password must contain at least 1 upper case letter."
-        ]
-      };
+      this.errors = getErrors({
+        "message": "The given data was invalid.",
+        "errors": {
+          email: [
+            "The Email address provided is not valid.",
+          ],
+          password: [
+            "Password confirmation does not match.",
+            "Password must contain at least 1 numeric value.",
+            "Password must contain at least 1 upper case letter."
+          ]
+        }
+      })
     },
     clearErrors() {
       this.errors = {};
